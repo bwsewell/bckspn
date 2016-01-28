@@ -1,0 +1,12 @@
+!!!
+%html{lang: "en", "ng-app" => "bckspn"}
+  %head
+    %meta{charset: "utf-8"}
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
+    %title bckspn
+    %script{type: 'text/javascript', src: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular.min.js'}
+    %script{type: 'text/javascript', src: '/js/main.js'}
+
+  %body{"ng-cloak" => "", "ng-controller" => "BckspnCtrl"}
+    %button{"ng-click" => "wordsmith()"} So some shit
+    %pre {{ response | json }}
