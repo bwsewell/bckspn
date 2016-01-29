@@ -6,6 +6,7 @@ require 'net/https'
 require 'uri'
 require 'json'
 require 'tilt/haml'
+require 'tilt/sass'
 require 'pry'
 require 'wordsmith-sdk'
 
@@ -24,7 +25,7 @@ post '/ws' do
   stuff = JSON.parse(request.body.read)["data"]
 
   project = Wordsmith::Project.find('ping-pong-pbp')
-  template = project.templates.find('play-by-play')           #fetch a template by slug
+  template = project.templates.find('pbp')           #fetch a template by slug
   result = template.generate(stuff)
 
   json result

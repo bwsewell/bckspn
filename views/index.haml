@@ -4,9 +4,34 @@
     %meta{charset: "utf-8"}
     %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
     %title bckspn
+    %script{type: 'text/javascript', src: '/js/underscore-min.js'}
     %script{type: 'text/javascript', src: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular.min.js'}
     %script{type: 'text/javascript', src: '/js/main.js'}
 
+    :sass
+      #words
+        font-size: 24px
+        font-weight: bold
+
   %body{"ng-cloak" => "", "ng-controller" => "BckspnCtrl"}
-    %button{"ng-click" => "wordsmith()"} So some shit
-    %pre {{ response | json }}
+    #words {{ pbp }}
+
+    #start{ng: { show: "rally.game == 0"}}
+      %input{type: "text", ng: { model: "rally.player_1"}}
+      %input{type: "text", ng: { model: "rally.player_2"}}
+      %button{ng: { click: "newGame()", show: "rally.server"}} Start
+
+    #ping{ng: { show: "rally.player_1_score == 0 && rally.player_2_score == 0"}}
+      %label{for: "server-1"}
+        %input{id: "server-1", type: "radio", ng: { model: "rally.server", value: "rally.player_1"}}
+        {{ rally.player_1 }}
+      %label{for: "server-2"}
+        %input{id: "server-2", type: "radio", ng: { model: "rally.server", value: "rally.player_2"}}
+        {{ rally.player_2 }}
+
+    #game{ng: { hide: "rally.game == 0"}}
+      %h1 Game {{ rally.game }}
+      %button{ng: { click: "score(1)"}} {{ rally.player_1 }} - {{ rally.player_1_score }}
+      %button{ng: { click: "score(2)"}} {{ rally.player_2 }} - {{ rally.player_2_score }}
+
+    %pre {{ rally | json }}
