@@ -72,6 +72,7 @@ angular.module('bckspn', [])
 
   $scope.score = function(player) {
     $scope.rally['player_' + player + '_score']++;
+    updateStreaks(player);
     updateDiffs(player);
     $scope.rally.lead = Math.abs($scope.rally.player_1_score - $scope.rally.player_2_score);
     wordsmith();
@@ -109,6 +110,22 @@ angular.module('bckspn', [])
     }).error(function(response) {
       console.log(response);
     });
+  };
+
+  var updateStreaks = function(player) {
+    if (player == 1) {
+      $scope.rally.player_1_streak++;
+      $scope.rally.player_2_streak = 0;
+      if ($scope.rally.player_1_streak > $scope.rally.player_1_long_streak) {
+        $scope.rally.player_1_long_streak = $scope.rally.player_1_streak;
+      }
+    } else if (player == 2) {
+      $scope.rally.player_2_streak++;
+      $scope.rally.player_1_streak = 0;
+      if ($scope.rally.player_2_streak > $scope.rally.player_2_long_streak) {
+        $scope.rally.player_2_long_streak = $scope.rally.player_2_streak;
+      }
+    }
   };
 
   var isGameOver = function() {
