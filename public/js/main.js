@@ -75,6 +75,7 @@ angular.module('bckspn', [])
     updateStreaks(player);
     updateDiffs(player);
     $scope.rally.lead = Math.abs($scope.rally.player_1_score - $scope.rally.player_2_score);
+    updateLeads();
     wordsmith();
   };
 
@@ -110,6 +111,18 @@ angular.module('bckspn', [])
     }).error(function(response) {
       console.log(response);
     });
+  };
+
+  var updateLeads = function() {
+    if ($scope.rally.player_1_score > $scope.rally.player_2_score) {
+      if ($scope.rally.lead > $scope.rally.player_1_largest_lead) {
+        $scope.rally.player_1_largest_lead = $scope.rally.lead;
+      }
+    } else if ($scope.rally.player_1_score < $scope.rally.player_2_score) {
+      if ($scope.rally.lead > $scope.rally.player_2_largest_lead) {
+        $scope.rally.player_2_largest_lead = $scope.rally.lead;
+      }
+    }
   };
 
   var updateStreaks = function(player) {
