@@ -42,7 +42,31 @@ angular.module('bckspn', [])
   };
 
   $scope.newGame = function() {
+    if ($scope.rally.player_1_score > $scope.rally.player_2_score) {
+      $scope.rally.player_1_games++;
+    } else if ($scope.rally.player_1_score < $scope.rally.player_2_score) {
+      $scope.rally.player_2_games++;
+    }
     $scope.rally.game++;
+    $scope.rally.player_1_score = 0;
+    $scope.rally.player_2_score = 0;
+    $scope.rally.player_1_score_diff = 0;
+    $scope.rally.player_2_score_diff = 0;
+    $scope.rally.lead = 0;
+    $scope.rally.server = null;
+    $scope.rally.alt_pt_streak = 0;
+    $scope.rally.player_1_long_streak = 0;
+    $scope.rally.player_2_long_streak = 0;
+    $scope.rally.player_1_largest_lead = 0;
+    $scope.rally.player_2_largest_lead = 0;
+    $scope.rally.tie = 0;
+    $scope.rally.tie_count = 0;
+    $scope.rally.player_1_serve_won = 0;
+    $scope.rally.player_1_serve_lost = 0;
+    $scope.rally.player_2_serve_won = 0;
+    $scope.rally.player_2_serve_lost = 0;
+    $scope.rally.player_1_win_prob = 0;
+    $scope.rally.player_2_win_prob = 0;
     wordsmith();
   };
 
@@ -77,11 +101,18 @@ angular.module('bckspn', [])
   var wordsmith = function() {
     $http.post('/ws', { data: $scope.rally }).success(function(response) {
       $scope.pbp = _.unescape(response.content).replace(/&#39;/g, '\'');
-      speak($scope.pbp);
+      // speak($scope.pbp);
       updateServer();
+      if (isGameOver()) {
+        $scope.newGame();
+      }
     }).error(function(response) {
       console.log(response);
     });
+  };
+
+  var isGameOver = function() {
+    return (($scope.rally.player_1_score >= 11 || $scope.rally.player_2_score >= 11) && $scope.rally.lead >= 2) || ($scope.rally.lead == 7 && ($scope.rally.player_1_score == 0 || $scope.rally.player_2_score == 0));
   };
 
   var speak = function(words) {
