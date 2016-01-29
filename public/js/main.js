@@ -74,6 +74,7 @@ angular.module('bckspn', [])
     $scope.rally['player_' + player + '_score']++;
     updateStreaks(player);
     updateDiffs(player);
+    updateServerStats();
     $scope.rally.lead = Math.abs($scope.rally.player_1_score - $scope.rally.player_2_score);
     updateLeads();
     wordsmith();
@@ -86,6 +87,22 @@ angular.module('bckspn', [])
     } else if (player == 2) {
       $scope.rally.player_2_score_diff = 1;
       $scope.rally.player_1_score_diff = 0;
+    }
+  };
+
+  var updateServerStats = function() {
+    if ($scope.rally.server == $scope.rally.player_1) {
+      if ($scope.rally.player_1_score_diff == 1) {
+        $scope.rally.player_1_serve_won++;
+      } else if ($scope.rally.player_2_score_diff == 1) {
+        $scope.rally.player_1_serve_lost++;
+      }
+    } else if ($scope.rally.server == $scope.rally.player_2) {
+      if ($scope.rally.player_2_score_diff == 1) {
+        $scope.rally.player_2_serve_won++;
+      } else if ($scope.rally.player_1_score_diff == 1) {
+        $scope.rally.player_2_serve_lost++;
+      }
     }
   };
 
