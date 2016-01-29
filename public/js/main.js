@@ -129,7 +129,8 @@ angular.module('bckspn', [])
   var wordsmith = function() {
     $http.post('/ws', { data: $scope.rally }).success(function(response) {
       $scope.pbp = _.unescape(response.content).replace(/&#39;/g, '\'');
-      // speak($scope.pbp);
+      speak($scope.pbp);
+      $scope.rallies[$scope.rallies.length - 1].narrative = $scope.pbp;
       updateServer();
       if (isGameOver()) {
         $scope.newGame();
