@@ -76,6 +76,7 @@ angular.module('bckspn', [])
     $scope.rally['player_' + player + '_score']++;
     updateStreaks(player);
     updateDiffs(player);
+    updateTies();
     updateServerStats();
     $scope.rally.lead = Math.abs($scope.rally.player_1_score - $scope.rally.player_2_score);
     updateLeads();
@@ -147,6 +148,16 @@ angular.module('bckspn', [])
       if ($scope.rally.lead > $scope.rally.player_2_largest_lead) {
         $scope.rally.player_2_largest_lead = $scope.rally.lead;
       }
+    }
+  };
+
+  var updateTies = function() {
+    var totalPoints = $scope.rally.player_1_score + $scope.rally.player_2_score;
+    if ($scope.rally.player_1_score == $scope.rally.player_2_score && totalPoints > 0) {
+      $scope.rally.tie = 1;
+      $scope.rally.tie_count++;
+    } else {
+      $scope.rally.tie = 0;
     }
   };
 
