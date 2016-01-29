@@ -10,6 +10,8 @@ angular.module('bckspn', [])
   msg.pitch = 1; //0 to 2
   msg.lang = 'en-GB';
 
+  $scope.rallies = [];
+
   $scope.rally = {
     "player_1": "",
     "player_2": "",
@@ -67,7 +69,7 @@ angular.module('bckspn', [])
     $scope.rally.player_2_serve_lost = 0;
     $scope.rally.player_1_win_prob = 0;
     $scope.rally.player_2_win_prob = 0;
-    wordsmith();
+    addRally($scope.rally);
   };
 
   $scope.score = function(player) {
@@ -77,6 +79,12 @@ angular.module('bckspn', [])
     updateServerStats();
     $scope.rally.lead = Math.abs($scope.rally.player_1_score - $scope.rally.player_2_score);
     updateLeads();
+    addRally($scope.rally);
+  };
+
+  var addRally = function(rally) {
+    var newRally = angular.copy(rally);
+    $scope.rallies.push(newRally);
     wordsmith();
   };
 

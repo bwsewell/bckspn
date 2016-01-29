@@ -35,4 +35,63 @@
       %button{ng: { click: "score(1)"}} {{ rally.player_1 }} - {{ rally.player_1_score }}
       %button{ng: { click: "score(2)"}} {{ rally.player_2 }} - {{ rally.player_2_score }}
 
-    %pre {{ rally | json }}
+    / %pre {{ rally | json }}
+
+    %table
+      %thead
+        %tr
+          %th player_1
+          %th player_2
+          %th player_1_hand
+          %th player_2_hand
+          %th server
+          %th game
+          %th player_1_score
+          %th player_2_score
+          %th player_1_score_diff
+          %th player_2_score_diff
+          %th lead
+          %th player_1_streak
+          %th player_2_streak
+          %th alt_pt_streak
+          %th player_1_long_streak
+          %th player_2_long_streak
+          %th player_1_largest_lead
+          %th player_2_largest_lead
+          %th tie
+          %th tie_count
+          %th player_1_serve_won
+          %th player_1_serve_lost
+          %th player_2_serve_won
+          %th player_2_serve_lost
+          %th player_1_win_prob
+          %th player_2_win_prob
+      %tbody
+        %tr{ng: { repeat: "r in rallies track by $index"}}
+          %td {{ r.player_1 }}
+          %td {{ r.player_2 }}
+          %td {{ r.player_1_hand }}
+          %td {{ r.player_2_hand }}
+          %td {{ r.server }}
+          %td {{ r.game }}
+          %td {{ r.player_1_score }}
+          %td {{ r.player_2_score }}
+          %td {{ r.player_1_score_diff }}
+          %td {{ r.player_2_score_diff }}
+          %td {{ r.lead }}
+          %td {{ r.player_1_streak }}
+          %td {{ r.player_2_streak }}
+          %td {{ r.alt_pt_streak }}
+          %td {{ r.player_1_long_streak }}
+          %td {{ r.player_2_long_streak }}
+          %td {{ r.player_1_largest_lead }}
+          %td {{ r.player_2_largest_lead }}
+          %td {{ r.tie }}
+          %td {{ r.tie_count }}
+          %td {{ r.player_1_serve_won }}
+          %td {{ r.player_1_serve_lost }}
+          %td {{ r.player_2_serve_won }}
+          %td {{ r.player_2_serve_lost }}
+          %td {{ r.player_1_win_prob }}
+          %td {{ r.player_2_win_prob }}
+
