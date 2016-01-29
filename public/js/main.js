@@ -1,5 +1,5 @@
 angular.module('bckspn', [])
-.controller('BckspnCtrl', function($scope, $timeout, $http) {
+.controller('BckspnCtrl', function($scope, $timeout, $interval, $http) {
   var msg = new SpeechSynthesisUtterance();
   var msg2 = new SpeechSynthesisUtterance();
   var voices = window.speechSynthesis.getVoices();
@@ -43,6 +43,24 @@ angular.module('bckspn', [])
     "player_2_games": 0
   };
 
+  $scope.test = function() {
+    $scope.testing = true;
+    $scope.newGame();
+    var tester = $interval(function() {
+      if ($scope.rally.server == null) {
+        r = _.random(1,2);
+        $scope.rally.server = $scope.rally["player_" + r];
+      }
+      r = _.random(1,2);
+      $scope.score(r);
+    }, 4000);
+  };
+
+  $scope.stop = function() {
+    $scope.testing = false;
+    $interval.cancel(tester);
+  };
+
   $scope.newGame = function() {
     if ($scope.rally.player_1_score > $scope.rally.player_2_score) {
       $scope.rally.player_1_games++;
@@ -78,9 +96,36 @@ angular.module('bckspn', [])
     updateDiffs(player);
     updateTies();
     updateServerStats();
+    updateHelperCalcs();
     $scope.rally.lead = Math.abs($scope.rally.player_1_score - $scope.rally.player_2_score);
     updateLeads();
     addRally($scope.rally);
+  };
+
+  var updateHelperCalcs = function() {
+    if ($scope.rally.player_1_score > $scope.rally.player_2_score) {
+      $scope.rally.winning_score = $scope.rally.player_1_score;
+      $scope.rally.winning_player = $scope.rally.player_1;
+      $scope.rally.losing_player = $scope.rally.player_2;
+    } else if ($scope.rally.player_2_score > $scope.rally.player_1_score) {
+      $scope.rally.winning_score = $scope.rally.player_2_score;
+      $scope.rally.winning_player = $scope.rally.player_2;
+      $scope.rally.losing_player = $scope.rally.player_1;
+    } else {
+      $scope.rally.winning_score = $scope.rally.player_1_score;
+      $scope.rally.losing_score = $scope.rally.player_1_score;
+    }
+    if ($scope.rally.player_1_score + $scope.rally.player_2_score % 2 == 0) {
+      if ($scope.rally.server = $scope.rally.player_1) {
+        $scope.rally.serving_next = $scope.rally.player_2;
+        $scope.rally.served_last = $scope.rally.player_1;
+      } else if ($scope.rally.server = $scope.rally.player_2) {
+        $scope.rally.serving_next = $scope.rally.player_1;
+        $scope.rally.served_last = $scope.rally.player_2;
+      }
+    } else {
+      $scope.rally.served_last = $scope.rally.serving_next;
+    }
   };
 
   var addRally = function(rally) {

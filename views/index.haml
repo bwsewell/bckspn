@@ -21,23 +21,24 @@
       %input{type: "text", ng: { model: "rally.player_1"}}
       %input{type: "text", ng: { model: "rally.player_2"}}
       %button{type: "button", ng: { click: "newGame()", show: "rally.player_1 || rally.player_2"}} Start
+      %button{type: "button", ng: { click: "test()", show: "rally.player_1 || rally.player_2"}} Test
+      %button{type: "button", ng: { click: "stop()", show: "testing"}} Stop
 
     #ping{ng: { hide: "rally.server || rally.game == 0"}}
       %h1 Who won PING?
       %label{for: "server-1"}
-        %input{id: "server-1", type: "radio", ng: { model: "rally.server", value: "rally.player_1"}}
+        %input{id: "ping_player_1", id: "server-1", type: "radio", ng: { model: "rally.server", value: "rally.player_1"}}
         {{ rally.player_1 }}
       %label{for: "server-2"}
-        %input{id: "server-2", type: "radio", ng: { model: "rally.server", value: "rally.player_2"}}
+        %input{id: "ping_player_2", id: "server-2", type: "radio", ng: { model: "rally.server", value: "rally.player_2"}}
         {{ rally.player_2 }}
 
     #game{ng: { show: "rally.game > 0 && rally.server"}}
       %h1 Game {{ rally.game }}
-      %button{type: "button", ng: { click: "score(1)"}} {{ rally.player_1 }} - {{ rally.player_1_score }}
-      %button{type: "button", ng: { click: "score(2)"}} {{ rally.player_2 }} - {{ rally.player_2_score }}
+      %button{id: "score_player_1", type: "button", ng: { click: "score(1)"}} {{ rally.player_1 }} - {{ rally.player_1_score }}
+      %button{id: "score_player_2", type: "button", ng: { click: "score(2)"}} {{ rally.player_2 }} - {{ rally.player_2_score }}
 
-    / %pre {{ rally | json }}
-
+    %pre {{ rally | json }}
 
     %h1 {{ rally.player_1 }} vs. {{ rally.player_2 }}
     %table
@@ -53,65 +54,77 @@
             %span{ng: { if: "r.player_2_score != 0"}}{{ r.player_2_score }}
           %td {{ r.narrative }}
 
-    / %table
-    /   %thead
-    /     %tr
-    /       %th player_1
-    /       %th player_2
-    /       %th player_1_hand
-    /       %th player_2_hand
-    /       %th server
-    /       %th game
-    /       %th player_1_score
-    /       %th player_2_score
-    /       %th player_1_score_diff
-    /       %th player_2_score_diff
-    /       %th lead
-    /       %th player_1_streak
-    /       %th player_2_streak
-    /       %th alt_pt_streak
-    /       %th player_1_long_streak
-    /       %th player_2_long_streak
-    /       %th player_1_largest_lead
-    /       %th player_2_largest_lead
-    /       %th tie
-    /       %th tie_count
-    /       %th player_1_serve_won
-    /       %th player_1_serve_lost
-    /       %th player_2_serve_won
-    /       %th player_2_serve_lost
-    /       %th player_1_win_prob
-    /       %th player_2_win_prob
-    /       %th player_1_games
-    /       %th player_2_games
-    /   %tbody
-    /     %tr{ng: { repeat: "r in rallies track by $index"}}
-    /       %td {{ r.player_1 }}
-    /       %td {{ r.player_2 }}
-    /       %td {{ r.player_1_hand }}
-    /       %td {{ r.player_2_hand }}
-    /       %td {{ r.server }}
-    /       %td {{ r.game }}
-    /       %td {{ r.player_1_score }}
-    /       %td {{ r.player_2_score }}
-    /       %td {{ r.player_1_score_diff }}
-    /       %td {{ r.player_2_score_diff }}
-    /       %td {{ r.lead }}
-    /       %td {{ r.player_1_streak }}
-    /       %td {{ r.player_2_streak }}
-    /       %td {{ r.alt_pt_streak }}
-    /       %td {{ r.player_1_long_streak }}
-    /       %td {{ r.player_2_long_streak }}
-    /       %td {{ r.player_1_largest_lead }}
-    /       %td {{ r.player_2_largest_lead }}
-    /       %td {{ r.tie }}
-    /       %td {{ r.tie_count }}
-    /       %td {{ r.player_1_serve_won }}
-    /       %td {{ r.player_1_serve_lost }}
-    /       %td {{ r.player_2_serve_won }}
-    /       %td {{ r.player_2_serve_lost }}
-    /       %td {{ r.player_1_win_prob }}
-    /       %td {{ r.player_2_win_prob }}
-    /       %td {{ r.player_1_games }}
-    /       %td {{ r.player_2_games }}
+    %table
+      %thead
+        %tr
+          %th player_1
+          %th player_2
+          %th player_1_hand
+          %th player_2_hand
+          %th server
+          %th game
+          %th player_1_score
+          %th player_2_score
+          %th player_1_score_diff
+          %th player_2_score_diff
+          %th lead
+          %th player_1_streak
+          %th player_2_streak
+          %th alt_pt_streak
+          %th player_1_long_streak
+          %th player_2_long_streak
+          %th player_1_largest_lead
+          %th player_2_largest_lead
+          %th tie
+          %th tie_count
+          %th player_1_serve_won
+          %th player_1_serve_lost
+          %th player_2_serve_won
+          %th player_2_serve_lost
+          %th player_1_win_prob
+          %th player_2_win_prob
+          %th player_1_games
+          %th player_2_games
+          %th winning_player
+          %th losing_player
+          %th serving_next
+          %th served_last
+          %th winning_score
+          %th losing_score
+      %tbody
+        %tr{ng: { repeat: "r in rallies track by $index"}}
+          %td {{ r.player_1 }}
+          %td {{ r.player_2 }}
+          %td {{ r.player_1_hand }}
+          %td {{ r.player_2_hand }}
+          %td {{ r.server }}
+          %td {{ r.game }}
+          %td {{ r.player_1_score }}
+          %td {{ r.player_2_score }}
+          %td {{ r.player_1_score_diff }}
+          %td {{ r.player_2_score_diff }}
+          %td {{ r.lead }}
+          %td {{ r.player_1_streak }}
+          %td {{ r.player_2_streak }}
+          %td {{ r.alt_pt_streak }}
+          %td {{ r.player_1_long_streak }}
+          %td {{ r.player_2_long_streak }}
+          %td {{ r.player_1_largest_lead }}
+          %td {{ r.player_2_largest_lead }}
+          %td {{ r.tie }}
+          %td {{ r.tie_count }}
+          %td {{ r.player_1_serve_won }}
+          %td {{ r.player_1_serve_lost }}
+          %td {{ r.player_2_serve_won }}
+          %td {{ r.player_2_serve_lost }}
+          %td {{ r.player_1_win_prob }}
+          %td {{ r.player_2_win_prob }}
+          %td {{ r.player_1_games }}
+          %td {{ r.player_2_games }}
+          %td {{ r.winning_player }}
+          %td {{ r.losing_player }}
+          %td {{ r.serving_next }}
+          %td {{ r.served_last }}
+          %td {{ r.winning_score }}
+          %td {{ r.losing_score }}
 
