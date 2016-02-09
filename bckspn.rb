@@ -19,7 +19,7 @@ post '/ws' do
 
   Wordsmith.configure do |config|
     config.token = '72e14c49fdba9d099f5f8c4b2ccfb2c1878f267f1b3e1ea73991d30e568c12f8'
-    config.url = 'https://anvil.autoi.co/api/v0.1'
+    config.url = 'https://wordsmith-staging.autoi.co/api/v0.1'
   end
 
   stuff = JSON.parse(request.body.read)["data"]
